@@ -1,0 +1,54 @@
+# Device-specific configurations
+
+# CPU configuration
+cpu:
+  type: "cpu"
+  threads: 4
+  memory_limit: "2GB"
+  optimization_flags: ["O3", "march=native"]
+
+# CUDA configuration (NVIDIA GPUs)
+cuda:
+  type: "cuda"
+  device_id: 0
+  memory_fraction: 0.8
+  allow_growth: true
+
+# Apple Silicon (M1/M2) configuration
+mps:
+  type: "mps"
+  device_id: 0
+  memory_limit: "4GB"
+
+# Raspberry Pi configuration
+raspberry_pi:
+  type: "cpu"
+  threads: 4
+  memory_limit: "1GB"
+  optimization_flags: ["O2"]
+  arm_neon: true
+
+# Jetson Nano configuration
+jetson_nano:
+  type: "cuda"
+  device_id: 0
+  memory_fraction: 0.6
+  power_mode: "MAXN"
+  gpu_freq: 921600000
+  emc_freq: 1600000000
+
+# Android configuration
+android:
+  type: "cpu"
+  threads: 2
+  memory_limit: "512MB"
+  neon: true
+  optimization_flags: ["O2"]
+
+# iOS configuration
+ios:
+  type: "cpu"
+  threads: 2
+  memory_limit: "256MB"
+  optimization_flags: ["O2"]
+  arm64: true

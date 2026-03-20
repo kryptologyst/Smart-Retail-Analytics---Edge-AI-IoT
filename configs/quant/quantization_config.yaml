@@ -1,0 +1,79 @@
+# Quantization configuration for edge optimization
+
+# Post-Training Quantization (PTQ)
+ptq:
+  enabled: true
+  method: "int8"
+  calibration_samples: 100
+  calibration_method: "minmax"  # minmax, percentile, entropy
+  per_channel: false
+  symmetric: true
+  narrow_range: false
+
+# Quantization-Aware Training (QAT)
+qat:
+  enabled: false
+  method: "int8"
+  epochs: 10
+  learning_rate: 0.0001
+  fake_quant: true
+  observer: "minmax"
+
+# Dynamic Quantization
+dynamic:
+  enabled: false
+  method: "int8"
+  weight_only: false
+
+# Pruning configuration
+pruning:
+  enabled: true
+  method: "magnitude"  # magnitude, structured, channel
+  sparsity: 0.3
+  iterative: true
+  fine_tune_epochs: 5
+  schedule: "polynomial"  # polynomial, exponential, linear
+
+# Knowledge Distillation
+distillation:
+  enabled: false
+  teacher_model: "baseline"
+  temperature: 3.0
+  alpha: 0.7
+  beta: 0.3
+
+# Model Compression
+compression:
+  enabled: true
+  target_size_mb: 1.0
+  compression_ratio: 0.5
+  method: "combined"  # quantization, pruning, distillation, combined
+
+# Edge-specific optimizations
+edge_optimizations:
+  batch_size: 1
+  input_shape: [1, 9]
+  optimize_for_latency: true
+  optimize_for_memory: true
+  optimize_for_energy: false
+  use_fp16: false
+  use_int8: true
+  use_int4: false
+
+# Hardware-specific settings
+hardware:
+  cpu:
+    threads: 4
+    vectorization: true
+    optimization_level: "O3"
+  gpu:
+    memory_fraction: 0.8
+    allow_growth: true
+    mixed_precision: false
+  arm:
+    neon: true
+    optimization_level: "O2"
+  mcu:
+    flash_size_mb: 2
+    ram_size_kb: 256
+    optimization_level: "Os"

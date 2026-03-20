@@ -1,0 +1,81 @@
+# @package _global_
+
+defaults:
+  - device: cpu
+  - model: baseline
+  - data: synthetic
+  - comms: mqtt
+
+# Global settings
+project_name: "smart_retail_analytics"
+version: "1.0.0"
+seed: 42
+
+# Model settings
+model:
+  input_features: 4
+  hidden_layers: [32, 16]
+  output_classes: 1
+  activation: "relu"
+  dropout: 0.2
+
+# Data settings
+data:
+  n_samples: 1000
+  test_size: 0.2
+  validation_size: 0.1
+  batch_size: 32
+  sequence_length: 10
+
+# Training settings
+training:
+  epochs: 15
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss_function: "binary_crossentropy"
+  early_stopping:
+    patience: 5
+    monitor: "val_loss"
+
+# Edge optimization settings
+optimization:
+  quantization:
+    enabled: true
+    method: "int8"
+    calibration_samples: 100
+  pruning:
+    enabled: true
+    sparsity: 0.3
+    method: "magnitude"
+  distillation:
+    enabled: false
+    teacher_model: "baseline"
+    temperature: 3.0
+
+# Device settings
+device:
+  type: "cpu"  # cpu, cuda, mps
+  fallback: true
+  memory_limit: "2GB"
+
+# Communication settings
+comms:
+  protocol: "mqtt"  # mqtt, kafka, websocket
+  broker_host: "localhost"
+  broker_port: 1883
+  topics:
+    sensor_data: "retail/sensors"
+    predictions: "retail/predictions"
+    alerts: "retail/alerts"
+
+# Evaluation settings
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1", "auc"]
+  edge_metrics: ["latency", "throughput", "memory", "energy"]
+  benchmark_datasets: ["synthetic", "real_world"]
+
+# Logging settings
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/retail_analytics.log"

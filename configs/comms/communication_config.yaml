@@ -1,0 +1,158 @@
+# Communication protocols configuration
+
+# MQTT Configuration
+mqtt:
+  enabled: true
+  broker_host: "localhost"
+  broker_port: 1883
+  username: ""
+  password: ""
+  client_id: "retail_analytics"
+  keepalive: 60
+  qos: 1
+  retain: false
+  clean_session: true
+  
+  # Topics
+  topics:
+    sensor_data: "retail/sensors/data"
+    predictions: "retail/analytics/predictions"
+    alerts: "retail/analytics/alerts"
+    metrics: "retail/analytics/metrics"
+    commands: "retail/analytics/commands"
+  
+  # Message formats
+  message_format: "json"  # json, protobuf, msgpack
+  compression: false
+  encryption: false
+
+# Kafka Configuration
+kafka:
+  enabled: false
+  bootstrap_servers: ["localhost:9092"]
+  client_id: "retail_analytics"
+  group_id: "retail_analytics_group"
+  
+  # Topics
+  topics:
+    sensor_data: "retail-sensor-data"
+    predictions: "retail-predictions"
+    alerts: "retail-alerts"
+  
+  # Producer settings
+  producer:
+    acks: "all"
+    retries: 3
+    batch_size: 16384
+    linger_ms: 5
+  
+  # Consumer settings
+  consumer:
+    auto_offset_reset: "latest"
+    enable_auto_commit: true
+    max_poll_records: 500
+
+# WebSocket Configuration
+websocket:
+  enabled: false
+  host: "localhost"
+  port: 8765
+  path: "/ws"
+  protocol: "ws"  # ws, wss
+  
+  # Message handling
+  max_message_size: 1048576  # 1MB
+  ping_interval: 30
+  ping_timeout: 10
+
+# OPC-UA Configuration (Industrial IoT)
+opcua:
+  enabled: false
+  endpoint: "opc.tcp://localhost:4840"
+  namespace: "retail_analytics"
+  
+  # Node IDs
+  nodes:
+    sensor_data: "ns=2;s=RetailAnalytics.SensorData"
+    predictions: "ns=2;s=RetailAnalytics.Predictions"
+    alerts: "ns=2;s=RetailAnalytics.Alerts"
+
+# gRPC Configuration
+grpc:
+  enabled: false
+  host: "localhost"
+  port: 50051
+  max_message_length: 4194304  # 4MB
+  
+  # Service definitions
+  services:
+    analytics: "RetailAnalyticsService"
+    streaming: "RetailStreamingService"
+
+# Serial Communication (MCU/Arduino)
+serial:
+  enabled: false
+  port: "/dev/ttyUSB0"
+  baudrate: 115200
+  timeout: 1.0
+  
+  # Protocol
+  protocol:
+    type: "custom"
+    delimiter: "\n"
+    encoding: "utf-8"
+
+# Data Streaming Configuration
+streaming:
+  buffer_size: 1000
+  batch_size: 32
+  flush_interval: 1.0  # seconds
+  compression: false
+  encryption: false
+  
+  # Backpressure handling
+  backpressure:
+    enabled: true
+    max_queue_size: 10000
+    drop_oldest: true
+
+# Security Configuration
+security:
+  tls:
+    enabled: false
+    cert_file: ""
+    key_file: ""
+    ca_file: ""
+  
+  authentication:
+    enabled: false
+    method: "token"  # token, certificate, basic
+    token_expiry: 3600  # seconds
+  
+  encryption:
+    enabled: false
+    algorithm: "AES-256-GCM"
+    key_rotation_interval: 86400  # seconds
+
+# Monitoring and Logging
+monitoring:
+  enabled: true
+  metrics_interval: 60  # seconds
+  log_level: "INFO"
+  
+  # Metrics to collect
+  metrics:
+    - message_count
+    - message_size
+    - latency
+    - throughput
+    - error_rate
+    - connection_status
+  
+  # Alerting
+  alerts:
+    enabled: true
+    thresholds:
+      latency_ms: 1000
+      error_rate_percent: 5.0
+      queue_size: 5000
